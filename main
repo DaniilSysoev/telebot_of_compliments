@@ -1,0 +1,24 @@
+import telebot
+from telebot import types
+import listofcompl
+
+
+bot = telebot.TeleBot("5333801642:AAEXhJdTOeDaQgIlmQ6MT3ssaUzqY-lZQls")
+LIST = listofcompl.List()
+
+
+@bot.message_handler(commands=['start'])
+def welcome(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = types.KeyboardButton("Получить комплимент")
+    markup.add(btn1)
+    bot.send_message(message.chat.id, "Привет! Рад тебя видеть, {0.first_name}!".format(message.from_user, bot.get_me()), parse_mode="html", reply_markup=markup)
+
+
+@bot.message_handler(content_types=['text'])
+def compliment(message):
+    if message.text == "Получить комплимент":
+        bot.send_message(message.chat.id, text=LIST.random_in_L())
+
+
+bot.polling(none_stop=True)
